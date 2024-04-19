@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/erp
-    username: chitransh
-    password: Chitransh07&
+    url: jdbc:mysql://localhost:3306/cinematica
+    username: cinematica
+    password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
@@ -21,6 +21,21 @@ application:
       expiration: 86400000 # a day
       refresh-token:
         expiration: 604800000 # 7 days
+  bucket:
+    name: cinematica
+
+
+cloud:
+  aws:
+    credentials:
+      access-key: AKIAW3MEFBHYBMEYF2NG
+      secret-key: 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
+    region:
+      static: eu-north-1
+    stack:
+      auto: false
+
+
 
 server:
   port: 8081
