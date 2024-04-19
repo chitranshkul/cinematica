@@ -1,8 +1,9 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/erp
-    username: chitransh
-    password: Chitransh07&
+    url: jdbc:mysql://localhost:3306/cinematica
+    username: cinematica
+    password: 1234
+
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
