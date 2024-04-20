@@ -1,29 +1,43 @@
 import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
-import "./login.css";
+import axios from "axios";
+import { Link,useNavigate } from "react-router-dom";
+import "./signup.css";
 import Logo from "../../images/Disney+_Hotstar_logo.svg.png";
 
-
-const Login = () => {
-    const [inputUsername, setInputUsername] = useState("");
-    const [inputPassword, setInputPassword] = useState("");
+const Register = () => {
     
+
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
     const [show, setShow] = useState(false);
     const [loading, setLoading] = useState(false);
-
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoading(true);
         await delay(500);
-        console.log(`Username :${inputUsername}, Password :${inputPassword}`);
-        if (inputUsername !== "admin" || inputPassword !== "admin") {
+        console.log(`First Name: ${firstName}, Last Name: ${lastName}, Email: ${email}, Password: ${password}`);
+        try {
+            const response = await axios.post("/api/v1/auth/register", {
+                firstname: firstName,
+                lastname: lastName,
+                email: email,
+                password: password,
+                role: "USER"
+            });
+            console.log(response.data); // Use this data as per your requirement
+            setLoading(false);
+        } catch (error) {
             setShow(true);
+            setLoading(false);
         }
-        setLoading(false);
     };
 
-    const handlePassword = () => { };
+    const handlePassword = () => {};
 
     function delay(ms) {
         return new Promise((resolve) => setTimeout(resolve, ms));
@@ -32,7 +46,7 @@ const Login = () => {
     return (
         <div
             className="sign-in__wrapper"
-            style={{ bbackgroundColor: '#070F2B' }}
+            style={{ backgroundColor: '#070F2B' }}
         >
             {/* Overlay */}
             <div className="sign-in__backdrop"></div>
@@ -44,8 +58,8 @@ const Login = () => {
                     src={Logo}
                     alt="logo"
                 />
-                <div className="h4 mb-2 text-center">Sign In</div>
-                {/* ALert */}
+                <div className="h4 mb-2 text-center">Register</div>
+                {/* Alert */}
                 {show ? (
                     <Alert
                         className="mb-2"
@@ -53,18 +67,38 @@ const Login = () => {
                         onClose={() => setShow(false)}
                         dismissible
                     >
-                        Incorrect username or password.
+                        Error occurred while registering.
                     </Alert>
                 ) : (
                     <div />
                 )}
-                <Form.Group className="mb-2" controlId="username">
-                    <Form.Label>Username</Form.Label>
+                <Form.Group className="mb-2" controlId="firstName">
+                    <Form.Label>First Name</Form.Label>
                     <Form.Control
                         type="text"
-                        value={inputUsername}
-                        placeholder="Username"
-                        onChange={(e) => setInputUsername(e.target.value)}
+                        value={firstName}
+                        placeholder="First Name"
+                        onChange={(e) => setFirstName(e.target.value)}
+                        required
+                    />
+                </Form.Group>
+                <Form.Group className="mb-2" controlId="lastName">
+                    <Form.Label>Last Name</Form.Label>
+                    <Form.Control
+                        type="text"
+                        value={lastName}
+                        placeholder="Last Name"
+                        onChange={(e) => setLastName(e.target.value)}
+                        required
+                    />
+                </Form.Group>
+                <Form.Group className="mb-2" controlId="email">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                        type="email"
+                        value={email}
+                        placeholder="Email"
+                        onChange={(e) => setEmail(e.target.value)}
                         required
                     />
                 </Form.Group>
@@ -72,25 +106,17 @@ const Login = () => {
                     <Form.Label>Password</Form.Label>
                     <Form.Control
                         type="password"
-                        value={inputPassword}
+                        value={password}
                         placeholder="Password"
-                        onChange={(e) => setInputPassword(e.target.value)}
+                        onChange={(e) => setPassword(e.target.value)}
                         required
                     />
                 </Form.Group>
-                <Form.Group className="mb-2" controlId="checkbox">
-                    <Form.Check type="checkbox" label="Remember me" />
-                </Form.Group>
-                {!loading ? (
-                    <Button className="w-100" variant="primary" type="submit">
-                        Log In
-                    </Button>
-                ) : (
-                    <Button className="w-100" variant="primary" type="submit" disabled>
-                        Logging In...
-                    </Button>
-                )}
-                <div className="d-grid justify-content-end">
+                <Button className="w-100" variant="primary" type="submit" disabled={loading}>
+                    {loading ? "Registering..." : "Register"}
+                </Button>
+                <div className="d-grid justify-content-between mt-2">
+                    <Link to="/login">Already have an account? Sign in</Link>
                     <Button
                         className="text-muted px-0"
                         variant="link"
@@ -104,4 +130,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Register;

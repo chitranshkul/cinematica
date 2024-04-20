@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./login.css";
 import Logo from "../../images/Disney+_Hotstar_logo.svg.png";
 
 const Login = () => {
+    const navigate = useNavigate();
+
     const [inputEmail, setInputEmail] = useState("");
     const [inputPassword, setInputPassword] = useState("");
 
@@ -14,16 +17,16 @@ const Login = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoading(true);
-        // await delay(500);
+        await delay(500);
         console.log(`Email :${inputEmail}, Password :${inputPassword}`);
         try {
-            const response = await axios.post("/api/v1/auth/authenticate", {
+            const response = await axios.post("http://localhost:8081/api/v1/auth/authenticate", {
                 email: inputEmail,
                 password: inputPassword
-            }) ;
-            console.log("I got some response "+response.data); // Use this data as per your requirement
+            });
+            console.log(response.data); // Use this data as per your requirement
             setLoading(false);
-            
+            navigate("/home");
         } catch (error) {
             setShow(true);
             setLoading(false);
