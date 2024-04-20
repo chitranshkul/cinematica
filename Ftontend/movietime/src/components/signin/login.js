@@ -1,29 +1,36 @@
 import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
+import axios from "axios";
 import "./login.css";
 import Logo from "../../images/Disney+_Hotstar_logo.svg.png";
 
-
 const Login = () => {
-    const [inputUsername, setInputUsername] = useState("");
+    const [inputEmail, setInputEmail] = useState("");
     const [inputPassword, setInputPassword] = useState("");
 
     const [show, setShow] = useState(false);
     const [loading, setLoading] = useState(false);
 
-
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoading(true);
-        await delay(500);
-        console.log(`Username :${inputUsername}, Password :${inputPassword}`);
-        if (inputUsername !== "admin" || inputPassword !== "admin") {
+        // await delay(500);
+        console.log(`Email :${inputEmail}, Password :${inputPassword}`);
+        try {
+            const response = await axios.post("/api/v1/auth/authenticate", {
+                email: inputEmail,
+                password: inputPassword
+            }) ;
+            console.log("I got some response "+response.data); // Use this data as per your requirement
+            setLoading(false);
+            
+        } catch (error) {
             setShow(true);
+            setLoading(false);
         }
-        setLoading(false);
     };
 
-    const handlePassword = () => { };
+    const handlePassword = () => {};
 
     function delay(ms) {
         return new Promise((resolve) => setTimeout(resolve, ms));
@@ -32,7 +39,7 @@ const Login = () => {
     return (
         <div
             className="sign-in__wrapper"
-            style={{ bbackgroundColor: '#070F2B' }}
+            style={{ backgroundColor: '#070F2B' }}
         >
             {/* Overlay */}
             <div className="sign-in__backdrop"></div>
@@ -45,7 +52,7 @@ const Login = () => {
                     alt="logo"
                 />
                 <div className="h4 mb-2 text-center">Sign In</div>
-                {/* ALert */}
+                {/* Alert */}
                 {show ? (
                     <Alert
                         className="mb-2"
@@ -53,18 +60,18 @@ const Login = () => {
                         onClose={() => setShow(false)}
                         dismissible
                     >
-                        Incorrect username or password.
+                        Incorrect email or password.
                     </Alert>
                 ) : (
                     <div />
                 )}
-                <Form.Group className="mb-2" controlId="username">
-                    <Form.Label>Username</Form.Label>
+                <Form.Group className="mb-2" controlId="email">
+                    <Form.Label>Email</Form.Label>
                     <Form.Control
-                        type="text"
-                        value={inputUsername}
-                        placeholder="Username"
-                        onChange={(e) => setInputUsername(e.target.value)}
+                        type="email"
+                        value={inputEmail}
+                        placeholder="Email"
+                        onChange={(e) => setInputEmail(e.target.value)}
                         required
                     />
                 </Form.Group>

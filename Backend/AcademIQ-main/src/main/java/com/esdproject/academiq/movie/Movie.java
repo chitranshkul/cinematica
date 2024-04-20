@@ -43,6 +43,9 @@ public class Movie {
     @Column(name="release_date")
     private String releaseDate;
 
+    @Column(name="trending")
+    private Boolean trending;
+
 //
 //    @ElementCollection
 //    @CollectionTable(name="movie_cast", joinColumns=@JoinColumn(name="movie_id"))
