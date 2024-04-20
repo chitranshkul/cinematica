@@ -1,12 +1,10 @@
-import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import React from 'react';
+import { Button, Container, Form, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useLanguage, LanguageProvider } from '../../context/LanguageContext';
 
 function CustomeNavbar() {
+    const { language, changeLanguage } = useLanguage(); // Update to useLanguage hook instead of useState
 
     const brandStyle = {
         fontWeight: 'bold',
@@ -18,6 +16,9 @@ function CustomeNavbar() {
         marginRight: '10px' // Adjust the value as needed
     };
 
+    const handleLanguageChange = (selectedLanguage) => {
+        changeLanguage(selectedLanguage); // Update the language using the provided context function
+    };
 
     return (
         <Navbar bg="dark" data-bs-theme="dark">
@@ -33,52 +34,28 @@ function CustomeNavbar() {
                         <Nav.Link href="#action1">Home</Nav.Link>
                         <Nav.Link href="#action2">My WatchList</Nav.Link>
                         <NavDropdown title="Genere" id="navbarScrollingDropdown">
-
-                            <NavDropdown.Item href="#action5">
-                                Thriller
-                            </NavDropdown.Item>
+                            <NavDropdown.Item href="#action5">Thriller</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action5">
-                                Comedy
-                            </NavDropdown.Item>
+                            <NavDropdown.Item href="#action5">Comedy</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action5">
-                                Drama
-                            </NavDropdown.Item>
+                            <NavDropdown.Item href="#action5">Drama</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action5">
-                                Science Fiction
-                            </NavDropdown.Item>
+                            <NavDropdown.Item href="#action5">Science Fiction</NavDropdown.Item>
                         </NavDropdown>
                         <NavDropdown title="Language" id="navbarScrollingDropdown">
-
-                            <NavDropdown.Item href="#action5">
-                                Hindi
-                            </NavDropdown.Item>
+                            <NavDropdown.Item onClick={() => handleLanguageChange("Hindi")}>Hindi</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action5">
-                                English
-                            </NavDropdown.Item>
+                            <NavDropdown.Item onClick={() => handleLanguageChange("English")}>English</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action5">
-                                Marathi
-                            </NavDropdown.Item>
+                            <NavDropdown.Item onClick={() => handleLanguageChange("Marathi")}>Marathi</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action5">
-                                Gujrati
-                            </NavDropdown.Item>
+                            <NavDropdown.Item onClick={() => handleLanguageChange("Gujrati")}>Gujrati</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action5">
-                                Tamil
-                            </NavDropdown.Item>
+                            <NavDropdown.Item onClick={() => handleLanguageChange("Tamil")}>Tamil</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action5">
-                                Telagu
-                            </NavDropdown.Item>
+                            <NavDropdown.Item onClick={() => handleLanguageChange("Telagu")}>Telagu</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action5">
-                                Kannada
-                            </NavDropdown.Item>
+                            <NavDropdown.Item onClick={() => handleLanguageChange("Kannada")}>Kannada</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
                     <Form className="d-flex">
