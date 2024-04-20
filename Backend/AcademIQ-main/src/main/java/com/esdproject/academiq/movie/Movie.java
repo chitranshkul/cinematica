@@ -46,6 +46,12 @@ public class Movie {
     @Column(name="trending")
     private Boolean trending;
 
+    @Column(name="movielink")
+    private String movielink;
+
+    @Column(name="posterlink")
+    private String posterlink;
+
 //
 //    @ElementCollection
 //    @CollectionTable(name="movie_cast", joinColumns=@JoinColumn(name="movie_id"))
