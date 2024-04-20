@@ -43,6 +43,12 @@ public class Movie {
     @Column(name="release_date")
     private String releaseDate;
 
+    @Column(name="movielink")
+    private String movielink;
+
+    @Column(name="posterlink")
+    private String posterlink;
+
 //
 //    @ElementCollection
 //    @CollectionTable(name="movie_cast", joinColumns=@JoinColumn(name="movie_id"))
