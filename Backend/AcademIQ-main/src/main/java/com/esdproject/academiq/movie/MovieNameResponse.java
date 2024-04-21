@@ -39,5 +39,4 @@ public class MovieNameResponse {
     @JsonProperty("trending")
     private Boolean trending;
 
-
 }
