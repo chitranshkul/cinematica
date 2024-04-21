@@ -34,8 +34,8 @@ public class Movie {
     @Column(name="genre")
     private String genre;
 
-    @Column(name="language")
-    private String language;
+    @Column(name="Language")
+    private String Language;
 
     @Column(name="duration")
     private String duration;
@@ -43,13 +43,11 @@ public class Movie {
     @Column(name="release_date")
     private String releaseDate;
 
-    @Column(name="trending")
-    private Boolean trending;
+//
+//    @ElementCollection
+//    @CollectionTable(name="movie_cast", joinColumns=@JoinColumn(name="movie_id"))
+//    @Column(name="cast")
+//    private List<String> cast;
 
-    @Column(name="moviefilename" , columnDefinition = "TEXT", length = 5000)
-    private String moviefilename;
-
-    @Column(name="posterfilename" , columnDefinition = "TEXT" , length = 5000)
-    private String posterfilename;
 
 }
