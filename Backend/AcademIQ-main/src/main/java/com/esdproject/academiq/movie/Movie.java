@@ -43,9 +43,6 @@ public class Movie {
     @Column(name="release_date")
     private String releaseDate;
 
-    @Column(name="trending")
-    private Boolean trending;
-
     @Column(name="movielink")
     private String movielink;
 
