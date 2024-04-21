@@ -4,8 +4,16 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface TokenRepository extends JpaRepository<Token, Integer> {
+
+
+//  static Token findBytoken(String jwtToken) {
+//  }
+
+  @Query("SELECT t FROM Token t WHERE t.token = :jwtToken")
+  Optional<Token> findByToken(@Param("jwtToken") String jwtToken);
 
   @Query(value = """
       select t from Token t inner join User u\s
@@ -14,5 +22,5 @@ public interface TokenRepository extends JpaRepository<Token, Integer> {
       """)
   List<Token> findAllValidTokenByUser(Integer id);
 
-  Optional<Token> findByToken(String token);
+
 }
