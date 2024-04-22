@@ -70,7 +70,7 @@ public class MovieService {
             if (optionalMovies.isPresent()) {
                 List<Movie> movies = optionalMovies.get();
                 for (Movie movie : movies) {
-                    String Posterink = generatePresignedUrl(movie.getPostpath());
+                    String Posterink = generatePresignedUrl(movie.getPosterfilename());
                     GenreResponse response = GenreResponse.builder()
                             .id(movie.getId())
                             .title(movie.getTitle())
@@ -95,8 +95,8 @@ public class MovieService {
             if(optionalMovies.isPresent()) {
                 List<Movie> movies = optionalMovies.get();
                 for (Movie movie : movies) {
-                    String Movelink = generatePresignedUrl(movie.getMovepath());
-                    String Posterink = generatePresignedUrl(movie.getPostpath());
+                    String Movelink = generatePresignedUrl(movie.getMoviefilename());
+                    String Posterink = generatePresignedUrl(movie.getPosterfilename());
                     MovieNameResponse response = MovieNameResponse.builder()
                             .title(movie.getTitle())
                             .movielink(Movelink)
@@ -129,7 +129,7 @@ public class MovieService {
             if (optionalMovies.isPresent()) {
                 List<Movie> movies = optionalMovies.get();
                 for (Movie movie : movies) {
-                    String Posterlink = generatePresignedUrl(movie.getPostpath());
+                    String Posterlink = generatePresignedUrl(movie.getPosterfilename());
                     GenreResponse response = GenreResponse.builder()
                             .id(movie.getId())
                             .title(movie.getTitle())
