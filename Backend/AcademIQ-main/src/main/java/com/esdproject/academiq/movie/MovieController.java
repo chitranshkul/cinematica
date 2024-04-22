@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("z")
+@RequestMapping("/api/v1/movies")
 public class MovieController {
 
     @Autowired

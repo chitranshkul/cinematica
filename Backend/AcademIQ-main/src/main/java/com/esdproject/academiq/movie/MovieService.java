@@ -70,7 +70,7 @@ public class MovieService {
             if (optionalMovies.isPresent()) {
                 List<Movie> movies = optionalMovies.get();
                 for (Movie movie : movies) {
-                    String Posterink = generatePresignedUrl(movie.getPosterfilename());
+                    String Posterink = generatePresignedUrl(movie.getPostpath());
                     GenreResponse response = GenreResponse.builder()
                             .id(movie.getId())
                             .title(movie.getTitle())
@@ -95,8 +95,8 @@ public class MovieService {
             if(optionalMovies.isPresent()) {
                 List<Movie> movies = optionalMovies.get();
                 for (Movie movie : movies) {
-                    String Movelink = generatePresignedUrl(movie.getMoviefilename());
-                    String Posterink = generatePresignedUrl(movie.getPosterfilename());
+                    String Movelink = generatePresignedUrl(movie.getMovepath());
+                    String Posterink = generatePresignedUrl(movie.getPostpath());
                     MovieNameResponse response = MovieNameResponse.builder()
                             .title(movie.getTitle())
                             .movielink(Movelink)
@@ -107,7 +107,7 @@ public class MovieService {
                             .language(movie.getLanguage())
                             .duration(movie.getDuration())
                             .releaseDate(movie.getReleaseDate())
-                            .trending(movie.getTrending())
+//                            .trending(movie.getTrending())
                             .build();
                     movieNameResponses.add(response);
                 }
@@ -129,7 +129,7 @@ public class MovieService {
             if (optionalMovies.isPresent()) {
                 List<Movie> movies = optionalMovies.get();
                 for (Movie movie : movies) {
-                    String Posterlink = generatePresignedUrl(movie.getPosterfilename());
+                    String Posterlink = generatePresignedUrl(movie.getPostpath());
                     GenreResponse response = GenreResponse.builder()
                             .id(movie.getId())
                             .title(movie.getTitle())

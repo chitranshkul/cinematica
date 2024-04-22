@@ -44,10 +44,10 @@ public class Movie {
     private String releaseDate;
 
     @Column(name="movielink")
-    private String movielink;
+    private String movepath;
 
     @Column(name="posterlink")
-    private String posterlink;
+    private String postpath;
 
 //
 //    @ElementCollection
