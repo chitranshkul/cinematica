@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.security.Key;
 import java.util.List;
@@ -21,6 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/wishlist")
 public class WishListController {
+    private static final Logger logger = LogManager.getLogger(WishListController.class);
      @Autowired
     private final WishListService wishListService;
     private final TokenRepository tokenRepository;
@@ -31,17 +34,16 @@ public class WishListController {
             @RequestHeader("Authorization") String token,
             @PathVariable Integer Mid) {
         try {
-            String jwtToken;
-
-                jwtToken = token.substring(7); // Extract JWT part from token
-                System.out.println("Token before substring: " + token);
-                System.out.println("JWT part after substring: " + jwtToken);
+            String jwtToken = token.substring(7); // Extract JWT part from token
+            logger.info("Token before substring: {}", token);
+            logger.info("JWT part after substring: {}", jwtToken);
 
             int userId = getUserIdFromToken(jwtToken); // Extract user ID from token
 
             String str = wishListService.addToWishList(userId, Mid);
             return ResponseEntity.ok(str);
         } catch (Exception e) {
+            logger.error("Failed to add to wish list: {}", e.getMessage());
             return ResponseEntity.badRequest().body("Failed to add to wish list: " + e.getMessage());
         }
     }
@@ -74,15 +76,15 @@ public class WishListController {
             @PathVariable Integer Mid) {
         try {
             String jwtToken = token.substring(7); // Extract JWT part from token
-            System.out.println("Token before substring: " + token);
-            System.out.println("JWT part after substring: " + jwtToken);
+            logger.info("Token before substring: {}", token);
+            logger.info("JWT part after substring: {}", jwtToken);
 
             int userId = getUserIdFromToken(jwtToken); // Extract user ID from token
-            System.out.println("TESTING USERID " + userId);
 
             wishListService.removefromWishList(userId, Mid); // Pass userId and Mid to the service method
             return ResponseEntity.ok("Removed from Wishlist successfully");
         } catch (Exception e) {
+            logger.error("Failed to remove from wish list: {}", e.getMessage());
             return ResponseEntity.badRequest().body("Failed to remove from wish list: " + e.getMessage());
         }
     }
@@ -92,8 +94,8 @@ public class WishListController {
             @RequestHeader("Authorization") String token) {
         try {
             String jwtToken = token.substring(7); // Extract JWT part from token
-            System.out.println("Token before substring: " + token);
-            System.out.println("JWT part after substring: " + jwtToken);
+            logger.info("Token before substring: {}", token);
+           // logger.info("JWT part after substring: {}", jwtToken);
 
             int userId = getUserIdFromToken(jwtToken); // Extract user ID from token
 
@@ -101,13 +103,8 @@ public class WishListController {
 
             return ResponseEntity.ok(movies);
         } catch (Exception e) {
+            logger.error("Error listing movies in wishlist: {}", e.getMessage());
             return ResponseEntity.badRequest().body(null); // Return an empty list or handle the error differently
         }
     }
-
-
-
-
-
-
 }

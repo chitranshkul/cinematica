@@ -15,12 +15,16 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
+  private static final Logger logger = LogManager.getLogger(AuthenticationService.class);
+
   private final UserRepository repository;
   private final TokenRepository tokenRepository;
   private final PasswordEncoder passwordEncoder;
@@ -28,55 +32,59 @@ public class AuthenticationService {
   private final AuthenticationManager authenticationManager;
 
   public AuthenticationResponse register(RegisterRequest request) {
+    logger.debug("Received registration request: {}", request);
     var user = User.builder()
-        .firstname(request.getFirstname())
-        .lastname(request.getLastname())
-        .email(request.getEmail())
-        .password(passwordEncoder.encode(request.getPassword()))
-        .role(request.getRole())
-        .build();
+            .firstname(request.getFirstname())
+            .lastname(request.getLastname())
+            .email(request.getEmail())
+            .password(passwordEncoder.encode(request.getPassword()))
+            .role(request.getRole())
+            .build();
     var savedUser = repository.save(user);
     var jwtToken = jwtService.generateToken(user);
     var refreshToken = jwtService.generateRefreshToken(user);
     saveUserToken(savedUser, jwtToken);
+    logger.info("User registered successfully: {}", savedUser.getEmail());
     return AuthenticationResponse.builder()
-        .accessToken(jwtToken)
+            .accessToken(jwtToken)
             .refreshToken(refreshToken)
-        .build();
+            .build();
   }
 
   public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    logger.debug("Received authentication request: {}", request);
     authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(
-            request.getEmail(),
-            request.getPassword()
-        )
+            new UsernamePasswordAuthenticationToken(
+                    request.getEmail(),
+                    request.getPassword()
+            )
     );
     var user = repository.findByEmail(request.getEmail())
-        .orElseThrow();
-
+            .orElseThrow();
     var jwtToken = jwtService.generateToken(user);
     var refreshToken = jwtService.generateRefreshToken(user);
     revokeAllUserTokens(user);
     saveUserToken(user, jwtToken);
+    logger.info("User authenticated successfully: {}", user.getEmail());
     return AuthenticationResponse.builder()
-        .accessToken(jwtToken)
+            .accessToken(jwtToken)
             .refreshToken(refreshToken)
             .firstName(user.getFirstname())
             .lastName(user.getLastname())
             .id(user.getId())
-        .build();
+            .build();
   }
 
   private void saveUserToken(User user, String jwtToken) {
     var token = Token.builder()
-        .user(user)
-        .token(jwtToken)
-        .tokenType(TokenType.BEARER)
-        .expired(false)
-        .revoked(false)
-        .build();
+            .user(user)
+            .token(jwtToken)
+            .tokenType(TokenType.BEARER)
+            .expired(false)
+            .revoked(false)
+            .build();
     tokenRepository.save(token);
+    logger.debug("User token saved successfully for user: {}", user.getEmail());
   }
 
   private void revokeAllUserTokens(User user) {
@@ -88,6 +96,7 @@ public class AuthenticationService {
       token.setRevoked(true);
     });
     tokenRepository.saveAll(validUserTokens);
+    logger.debug("Revoked all valid tokens for user: {}", user.getEmail());
   }
 
   public void refreshToken(
@@ -97,7 +106,8 @@ public class AuthenticationService {
     final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
     final String refreshToken;
     final String userEmail;
-    if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
+    if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+      logger.warn("Bearer token not found in the request");
       return;
     }
     refreshToken = authHeader.substring(7);
@@ -114,7 +124,12 @@ public class AuthenticationService {
                 .refreshToken(refreshToken)
                 .build();
         new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
+        logger.debug("Token refreshed successfully for user: {}", user.getEmail());
+      } else {
+        logger.warn("Refresh token is invalid for user: {}", user.getEmail());
       }
+    } else {
+      logger.error("User email not found in the refresh token");
     }
   }
 }
