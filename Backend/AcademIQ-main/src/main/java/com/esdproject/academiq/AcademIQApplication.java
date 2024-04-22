@@ -1,6 +1,7 @@
 package com.esdproject.academiq;
 
 
+import com.amazonaws.services.appconfig.model.Application;
 import com.esdproject.academiq.auth.AuthenticationService;
 import com.esdproject.academiq.auth.RegisterRequest;
 
@@ -21,6 +22,7 @@ import java.util.Date;
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
 public class AcademIQApplication {
 
+//	private static final Logger LOGGER = LogManager.getLogger(Application.class);
 	public static void main(String[] args) {
 		SpringApplication.run(AcademIQApplication.class, args);
 	}
