@@ -107,7 +107,7 @@ public class MovieService {
                             .language(movie.getLanguage())
                             .duration(movie.getDuration())
                             .releaseDate(movie.getReleaseDate())
-                            //.trending(movie.getTrending())
+                            .trending(movie.getTrending())
                             .build();
                     movieNameResponses.add(response);
                 }

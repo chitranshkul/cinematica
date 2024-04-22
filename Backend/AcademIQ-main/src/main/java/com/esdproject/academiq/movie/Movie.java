@@ -50,6 +50,6 @@ public class Movie {
     private String posterfilename;
 
     @Column(name="trending")
-    private boolean trending;
+    private Boolean trending;
 
 }
