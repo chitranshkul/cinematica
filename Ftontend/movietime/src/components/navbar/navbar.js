@@ -31,16 +31,18 @@ function CustomeNavbar() {
                         style={{ maxHeight: '100px' }}
                         navbarScroll
                     >
-                        <Nav.Link href="#action1">Home</Nav.Link>
-                        <Nav.Link href="#action2">My WatchList</Nav.Link>
+                        <Nav.Link href="/home">Home</Nav.Link>
+                        <Nav.Link href="watchlist">My WatchList</Nav.Link>
                         <NavDropdown title="Genere" id="navbarScrollingDropdown">
-                            <NavDropdown.Item href="#action5">Thriller</NavDropdown.Item>
+                        <NavDropdown.Item href="#Action">Action</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action5">Comedy</NavDropdown.Item>
+                            <NavDropdown.Item href="#Thriller">Thriller</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action5">Drama</NavDropdown.Item>
+                            <NavDropdown.Item href="#Comedy">Comedy</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action5">Science Fiction</NavDropdown.Item>
+                            <NavDropdown.Item href="#Drama">Drama</NavDropdown.Item>
+                            <NavDropdown.Divider />
+                            <NavDropdown.Item href="#ScienceFiction">Science Fiction</NavDropdown.Item>
                         </NavDropdown>
                         <NavDropdown title="Language" id="navbarScrollingDropdown">
                             <NavDropdown.Item onClick={() => handleLanguageChange("Hindi")}>Hindi</NavDropdown.Item>

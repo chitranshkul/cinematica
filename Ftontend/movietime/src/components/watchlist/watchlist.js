@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 function Watchlist() {
     const [movies, setMovies] = useState([]);
@@ -8,8 +9,13 @@ function Watchlist() {
     useEffect(() => {
         async function fetchWatchlistMovies() {
             try {
-                const response = await axios.get('http://localhost:8081/api/v1/watchlist');
+                const response = await axios.get('/api/v1/wishlist/ListMoviesinWishlist', {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('access_toke')}`
+                    }
+                });
                 setMovies(response.data);
+                console.log(response.data);
             } catch (error) {
                 console.error('Error fetching watchlist movies:', error);
             }
@@ -19,11 +25,17 @@ function Watchlist() {
 
     const removeFromWatchlist = async (id) => {
         try {
-            await axios.delete(`http://localhost:8081/api/v1/watchlist/${id}`);
+            await axios.delete(`http://localhost:8081/api/v1/watchlist/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('access_token')}`
+                }
+            });
             const updatedMovies = movies.filter(movie => movie.id !== id);
             setMovies(updatedMovies);
+            alert('Movie removed from watchlist successfully!');
         } catch (error) {
             console.error('Error removing movie from watchlist:', error);
+            alert('Failed to remove movie from watchlist!');
         }
     };
 
@@ -42,8 +54,8 @@ function Watchlist() {
                             <Card className="mb-3">
                                 <Card.Img variant="top" src={movie.posterlink} />
                                 <Card.Body>
-                                    <Card.Title>{movie.movielink}</Card.Title>
-                                    <Button variant="primary" className="me-2">Watch</Button>
+                                    <Card.Title>{movie.movie_title}</Card.Title>
+                                    <Link to={"/movie/"+movie.movie_title}><Button variant="primary" className="me-2">Watch</Button></Link>
                                     <Button variant="danger" onClick={() => removeFromWatchlist(movie.id)}>Remove</Button>
                                 </Card.Body>
                             </Card>

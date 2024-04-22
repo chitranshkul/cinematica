@@ -1,29 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
-import { useLanguage,LanguageProvider } from '../../context/LanguageContext';
-
-const initialMovies = [
-    {
-        id: 1,
-        name: "Inception",
-        poster: "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg"
-    },
-    {
-        id: 2,
-        name: "Interstellar",
-        poster: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg"
-    },
-    {
-        id: 3,
-        name: "The Dark Knight",
-        poster: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg"
-    }
-];
+import axios from 'axios';
+import { useLanguage } from '../../context/LanguageContext';
+import { Link } from 'react-router-dom';
 
 function MovieByLanguage() {
-    const [movies, setMovies] = useState(initialMovies);
+    const [movies, setMovies] = useState([]);
     const { language, changeLanguage } = useLanguage();
 
+    useEffect(() => {
+        async function fetchMoviesByLanguage() {
+            try {
+                const response = await axios.get(`/api/v1/movies/fetchMovieBylanguage/${language}`);
+                setMovies(response.data);
+            } catch (error) {
+                console.error('Error fetching movies by language:', error);
+            }
+        }
+        fetchMoviesByLanguage();
+    }, [language]);
 
     const removeFromWatchlist = (id) => {
         const updatedMovies = movies.filter(movie => movie.id !== id);
@@ -36,16 +31,17 @@ function MovieByLanguage() {
                 <br />
                 <br />
                 <Row style={{ color:'white'}}>
-                    My Watchlist with langage {language}
+                    My Watchlist with language {language}
                 </Row>
                 <br></br>
                 <Row>
                     {movies.map((movie) => (
                         <Col key={movie.id} sm={6} md={4} lg={3}>
                             <Card className="mb-3">
-                                <Card.Img variant="top" src={movie.poster} />
+                                <Card.Img variant="top" src={movie.posterlink} />
                                 <Card.Body>
-                                    <Card.Title>{movie.name}</Card.Title>
+                                    <Card.Title>{movie.movie_title}</Card.Title>
+                                    <Link to={"/movie/"+movie.movie_title}><Button variant="primary">Watch</Button></Link>
                                 </Card.Body>
                             </Card>
                         </Col>

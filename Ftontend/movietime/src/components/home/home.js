@@ -17,7 +17,7 @@ const Home = () => {
     useEffect(() => {
         async function fetchActionMovies() {
             try {
-                const response = await axios.get('/api/v1/movies/genres/action');
+                const response = await axios.get('/api/v1/movies/fetchGenre/action');
                 setActionMovies(response.data);
             } catch (error) {
                 console.error('Error fetching action movies:', error);
@@ -26,7 +26,7 @@ const Home = () => {
 
         async function fetchThrillerMovies() {
             try {
-                const response = await axios.get('/api/v1/movies/genres/thriller');
+                const response = await axios.get('/api/v1/movies/fetchGenre/thriller');
                 setThrillerMovies(response.data);
             } catch (error) {
                 console.error('Error fetching thriller movies:', error);
@@ -35,8 +35,9 @@ const Home = () => {
 
         async function fetchComedyMovies() {
             try {
-                const response = await axios.get('/api/v1/movies/genres/comedy');
+                const response = await axios.get('/api/v1/movies/fetchGenre/comedy');
                 setComedyMovies(response.data);
+                console.log(response.data);
             } catch (error) {
                 console.error('Error fetching comedy movies:', error);
             }
@@ -44,7 +45,7 @@ const Home = () => {
 
         async function fetchDramaMovies() {
             try {
-                const response = await axios.get('/api/v1/movies/genres/drama');
+                const response = await axios.get('/api/v1/movies/fetchGenre/drama');
                 setDramaMovies(response.data);
             } catch (error) {
                 console.error('Error fetching drama movies:', error);
@@ -53,7 +54,7 @@ const Home = () => {
 
         async function fetchScienceFictionMovies() {
             try {
-                const response = await axios.get('/api/v1/movies/genres/scienceFiction');
+                const response = await axios.get('/api/v1/movies/fetchGenre/scienceFiction');
                 setScienceFictionMovies(response.data);
             } catch (error) {
                 console.error('Error fetching science fiction movies:', error);
@@ -116,13 +117,13 @@ const Home = () => {
             <div>
                 <h1>Action</h1>
 
-                <Row className="mb-3">
+                <Row className="mb-3" id = "Action">
 
                     {actionMovies.map((movie, index) => (
-                        <Link to="">
+                        <Link to={"/movie/"+movie.movie_title}>
                             <Col key={index} xs={6} sm={2}>
                                 <Card className="mb-3">
-                                    <Card.Img variant="top" src={movie.poster} />
+                                    <Card.Img variant="top" src={movie.posterlink} />
                                 </Card>
                             </Col>
                         </Link>
@@ -131,13 +132,13 @@ const Home = () => {
             </div>
             <div>
                 <h1>Thriller</h1>
-                <Row className="mb-3">
+                <Row className="mb-3" id="Thriller">
 
                     {thrillerMovies.map((movie, index) => (
-                        <Link to="">
+                        <Link to={"/movie/"+movie.movie_title}>
                             <Col key={index} xs={6} sm={2}>
                                 <Card className="mb-3">
-                                    <Card.Img variant="top" src={movie.poster} />
+                                    <Card.Img variant="top" src={movie.posterlink} />
                                 </Card>
                             </Col>
                         </Link>
@@ -146,12 +147,12 @@ const Home = () => {
             </div>
             <div>
                 <h1>Comedy</h1>
-                <Row className="mb-3">
+                <Row className="mb-3" id ="Comedy">
                     {comedyMovies.map((movie, index) => (
-                        <Link to="">
+                        <Link to={"/movie/"+movie.movie_title}>
                             <Col key={index} xs={6} sm={2}>
                                 <Card className="mb-3">
-                                    <Card.Img variant="top" src={movie.poster} />
+                                    <Card.Img variant="top" src={movie.posterlink} />
                                 </Card>
                             </Col>
                         </Link>
@@ -160,12 +161,12 @@ const Home = () => {
             </div>
             <div>
                 <h1>Drama</h1>
-                <Row className="mb-3">
+                <Row className="mb-3" id="Drama">
                     {dramaMovies.map((movie, index) => (
                         <Link to="">
                             <Col key={index} xs={6} sm={2}>
                                 <Card className="mb-3">
-                                    <Card.Img variant="top" src={movie.poster} />
+                                    <Card.Img variant="top" src={movie.posterlink} />
                                 </Card>
                             </Col>
                         </Link>
@@ -174,12 +175,12 @@ const Home = () => {
             </div>
             <div>
                 <h1>Science Fiction</h1>
-                <Row className="mb-3">
+                <Row className="mb-3" id="ScienceFiction">
                     {scienceFictionMovies.map((movie, index) => (
                         <Link to="">
                             <Col key={index} xs={6} sm={2}>
                                 <Card className="mb-3">
-                                    <Card.Img variant="top" src={movie.poster} />
+                                    <Card.Img variant="top" src={movie.posterlink} />
                                 </Card>
                             </Col>
                         </Link>

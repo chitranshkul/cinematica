@@ -9,6 +9,7 @@ import Watchlist from "../watchlist/watchlist";
 import Register from "../signup/siginup";
 import { LanguageProvider } from "../../context/LanguageContext";
 import MovieByLanguage from "../byLanguage/movieByLangauge";
+import AddMovie from "../AddMovie/add movie";
 
 function Layout() {
 
@@ -23,9 +24,10 @@ function Layout() {
                         <Route path="login" element={<Login />} />
                         <Route path="signup" element={<Register />} />
                         <Route path="home" element={<Home />} />
-                        <Route path="movie" element={<Movie />} />
+                        <Route path="movie/:id" element={<Movie />} />
                         <Route path="watchlist" element={<Watchlist />} />
                         <Route path="moviebylanguage" element={<MovieByLanguage/>}/>
+                        <Route path="admin" element={<AddMovie/>}/>
                     </Routes>
                 </div>
                 {/* <Footer /> */}

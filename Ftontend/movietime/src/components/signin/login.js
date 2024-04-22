@@ -24,7 +24,8 @@ const Login = () => {
                 email: inputEmail,
                 password: inputPassword
             });
-            console.log(response.data); // Use this data as per your requirement
+            console.log(response.data['access_token']); // Use this data as per your requirement
+            localStorage.setItem("access_toke",  response.data['access_token']);
             setLoading(false);
             navigate("/home");
         } catch (error) {
