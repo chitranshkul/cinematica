@@ -51,4 +51,5 @@ public class Movie {
 
     @Column(name="trending")
     private boolean trending;
+
 }
