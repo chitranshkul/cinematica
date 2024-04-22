@@ -39,4 +39,7 @@ public class MovieNameResponse {
     @JsonProperty("trending")
     private Boolean trending;
 
+    @JsonProperty("movie_id")
+    private Integer movieid;
+
 }

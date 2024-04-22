@@ -1,6 +1,7 @@
 package com.esdproject.academiq.wishList;
 
 import com.amazonaws.services.dynamodbv2.xspec.S;
+import com.esdproject.academiq.movie.GenreResponse;
 import com.esdproject.academiq.movie.Movie;
 import com.esdproject.academiq.token.Token;
 import com.esdproject.academiq.token.TokenRepository;
@@ -88,7 +89,7 @@ public class WishListController {
     }
 
     @GetMapping("/ListMoviesinWishlist")
-    public ResponseEntity<List<Movie>> listMoviesInWishlist(
+    public ResponseEntity<List<GenreResponse>> listMoviesInWishlist(
             @RequestHeader("Authorization") String token) {
         try {
             String jwtToken = token.substring(7); // Extract JWT part from token
@@ -97,7 +98,7 @@ public class WishListController {
 
             int userId = getUserIdFromToken(jwtToken); // Extract user ID from token
 
-            List<Movie> movies = wishListService.listMoviesInWishlist(userId); // Use the correct method
+            List<GenreResponse> movies = wishListService.listMoviesInWishlist(userId); // Use the correct method
 
             return ResponseEntity.ok(movies);
         } catch (Exception e) {

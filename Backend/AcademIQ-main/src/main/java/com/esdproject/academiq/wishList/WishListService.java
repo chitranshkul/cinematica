@@ -2,8 +2,10 @@ package com.esdproject.academiq.wishList;
 
 import com.amazonaws.services.dynamodbv2.xspec.L;
 import com.amazonaws.services.dynamodbv2.xspec.S;
+import com.esdproject.academiq.movie.GenreResponse;
 import com.esdproject.academiq.movie.Movie;
 import com.esdproject.academiq.movie.MovieRepository;
+import com.esdproject.academiq.movie.MovieService;
 import com.esdproject.academiq.user.User;
 import com.esdproject.academiq.user.UserRepository;
 import lombok.Builder;
@@ -24,7 +26,7 @@ public class WishListService {
     private final WishListRepository wishListRepository;
     private final UserRepository userRepository;
     private final MovieRepository movieRepository;
-
+    private final MovieService movieService;
     // Constructor injection
 //    public WishListService(WishListRepository wishListRepository, UserRepository userRepository, MovieRepository movieRepository) {
 //        this.wishListRepository = wishListRepository;
@@ -87,9 +89,10 @@ public class WishListService {
 
 
 
-    public List<Movie> listMoviesInWishlist(int userId) {
+    public List<GenreResponse> listMoviesInWishlist(int userId) {
         // Initialize the list to store movies
         List<Movie> movies = new ArrayList<>();
+        List<GenreResponse> mv = new ArrayList<>();
 
         // Retrieve the wishlist entries for the given user ID
         List<WishList> wishlistEntries = wishListRepository.findByUserID(userId);
@@ -100,14 +103,20 @@ public class WishListService {
             for (WishList wishlistEntry : wishlistEntries) {
                 // Get the movie from the wishlist entry
                 Movie movie = wishlistEntry.getMovieID();
-                movies.add(movie);
+                String Posterlink = movieService.generatePresignedUrl(movie.getPosterfilename());
+                GenreResponse response = GenreResponse.builder()
+                        .id(movie.getId())
+                        .title(movie.getTitle())
+                        .posterlink(Posterlink)
+                        .build();
+                mv.add(response);
             }
         } else {
             // Log a message if wishlist entries are not found for the user
             System.out.println("No wishlist entries found for user ID: " + userId);
         }
 
-        return movies;
+        return mv;
     }
 
 

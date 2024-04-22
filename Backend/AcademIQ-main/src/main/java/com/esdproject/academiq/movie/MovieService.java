@@ -108,6 +108,7 @@ public class MovieService {
                             .duration(movie.getDuration())
                             .releaseDate(movie.getReleaseDate())
 //                            .trending(movie.getTrending())
+                            .movieid(movie.getId())
                             .build();
                     movieNameResponses.add(response);
                 }
@@ -144,6 +145,22 @@ public class MovieService {
             e.printStackTrace(); // Print stack trace for debugging
             return Optional.empty(); // Return an empty Optional
         }
+    }
+
+    public Movie addMovie(MovieRequest movieRequest) throws IOException {
+        Movie movie = new Movie();
+        movie.setTitle(movieRequest.getTitle());
+        movie.setDescription(movieRequest.getDescription());
+        movie.setRating(movieRequest.getRating());
+        movie.setGenre(movieRequest.getGenre());
+        movie.setLanguage(movieRequest.getLanguage());
+        movie.setDuration(movieRequest.getDuration());
+        movie.setReleaseDate(movieRequest.getReleaseDate());
+        movie.setMoviefilename(movieRequest.getMoviefilename());
+        movie.setPosterfilename(movieRequest.getPosterfilename());
+        movie.setTrending(movieRequest.isTrending());
+
+        return movieRepository.save(movie);
     }
 }
 

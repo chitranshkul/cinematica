@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +30,7 @@ public class MovieController {
 
     @GetMapping("/fetchMovieName/{moviename}")
     public ResponseEntity<Optional<List<MovieNameResponse>>> fetchByMovieName(@PathVariable String moviename) {
+        System.out.println("***************** I got the Movie Name as "+moviename);
         Optional<List<MovieNameResponse>> responses = service.fetchByTitle(moviename);
         return ResponseEntity.ok(responses);
     }
@@ -37,5 +39,12 @@ public class MovieController {
     public ResponseEntity< Optional<List<GenreResponse>> > fetchMovieByLanguage(@PathVariable String language) {
         Optional<List<GenreResponse>> responses = service.fetchMovieByLanguage(language);
         return ResponseEntity.ok(responses);
+    }
+
+
+    @PostMapping("/addMovie")
+    public ResponseEntity<Movie> addMovie(@RequestBody MovieRequest movieRequest) throws IOException {
+        Movie movie = service.addMovie(movieRequest);
+        return new ResponseEntity<>(movie, HttpStatus.CREATED);
     }
 }
