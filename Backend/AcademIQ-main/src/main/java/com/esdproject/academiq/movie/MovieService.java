@@ -7,6 +7,8 @@ import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ import java.util.Optional;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class MovieService {
 
+    private static final Logger logger = LogManager.getLogger(MovieService.class);
     private final MovieRepository movieRepository;
 
     @Value("${application.bucket.name}")
@@ -35,11 +38,13 @@ public class MovieService {
     private AmazonS3 s3Client;
 
     public String uploadFile(MultipartFile file) {
+        logger.debug("Uploading file...");
         File fileObj = convertMultiPartFileToFile(file);
         String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
         s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObj));
         fileObj.delete(); //delete from the s3 bucket
-         return "File uploaded : " + fileName;
+        logger.debug("File uploaded : {}", fileName);
+        return "File uploaded : " + fileName;
         //return generatePresignedUrl((fileName));
     }
 
@@ -48,10 +53,11 @@ public class MovieService {
         try (FileOutputStream fos = new FileOutputStream(convertedFile)) {
             fos.write(file.getBytes());
         } catch (IOException e) {
-            log.error("Error converting multipartFile to file", e);
+            logger.error("Error converting multipartFile to file", e);
         }
         return convertedFile;
     }
+
     public String generatePresignedUrl(String fileName) {
         Date expiration = new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24)); // URL expiration time (24 hours)
         GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucketName, fileName)
@@ -70,56 +76,53 @@ public class MovieService {
             if (optionalMovies.isPresent()) {
                 List<Movie> movies = optionalMovies.get();
                 for (Movie movie : movies) {
-                    String Posterink = generatePresignedUrl(movie.getPosterfilename());
+                    String posterLink = generatePresignedUrl(movie.getPosterfilename());
                     GenreResponse response = GenreResponse.builder()
                             .id(movie.getId())
                             .title(movie.getTitle())
-                            .posterlink(Posterink)
+                            .posterlink(posterLink)
                             .build();
                     genreResponses.add(response);
                 }
             }
+            logger.info("Fetch by genre '{}' completed successfully.", genre);
             return Optional.of(genreResponses);
         } catch (Exception e) {
-            // Log the exception or handle it as needed
-            e.printStackTrace(); // Print stack trace for debugging
-            return Optional.empty(); // Return an empty Optional
+            logger.error("Error occurred while fetching movies by genre '{}': {}", genre, e.getMessage());
+            return Optional.empty();
         }
     }
 
     public Optional<List<MovieNameResponse>> fetchByTitle(String moviename) {
-        Optional<List<Movie>> optionalMovies = movieRepository.findByTitle(moviename);
-        List<MovieNameResponse> movieNameResponses = new ArrayList<>();
-
         try {
+            Optional<List<Movie>> optionalMovies = movieRepository.findByTitle(moviename);
+            List<MovieNameResponse> movieNameResponses = new ArrayList<>();
+
             if(optionalMovies.isPresent()) {
                 List<Movie> movies = optionalMovies.get();
                 for (Movie movie : movies) {
-                    String Movelink = generatePresignedUrl(movie.getMoviefilename());
-                    String Posterink = generatePresignedUrl(movie.getPosterfilename());
+                    String movieLink = generatePresignedUrl(movie.getMoviefilename());
+                    String posterLink = generatePresignedUrl(movie.getPosterfilename());
                     MovieNameResponse response = MovieNameResponse.builder()
                             .title(movie.getTitle())
-                            .movielink(Movelink)
-                            .posterlink(Posterink)
+                            .movielink(movieLink)
+                            .posterlink(posterLink)
                             .Description(movie.getDescription())
                             .rating(movie.getRating())
                             .genre(movie.getGenre())
                             .language(movie.getLanguage())
                             .duration(movie.getDuration())
                             .releaseDate(movie.getReleaseDate())
-//                            .trending(movie.getTrending())
-                            .movieid(movie.getId())
                             .build();
                     movieNameResponses.add(response);
                 }
             }
+            logger.info("Fetch by title '{}' completed successfully.", moviename);
+            return Optional.of(movieNameResponses);
         } catch (Exception e) {
-            // Log the exception or handle it accordingly
-            e.printStackTrace(); // For demonstration purpose, you might want to handle it differently in a real application
-            return Optional.empty(); // Return empty optional indicating failure
+            logger.error("Error occurred while fetching movies by title '{}': {}", moviename, e.getMessage());
+            return Optional.empty();
         }
-
-        return Optional.of(movieNameResponses);
     }
 
     public Optional<List<GenreResponse>> fetchMovieByLanguage(String language) {
@@ -130,20 +133,20 @@ public class MovieService {
             if (optionalMovies.isPresent()) {
                 List<Movie> movies = optionalMovies.get();
                 for (Movie movie : movies) {
-                    String Posterlink = generatePresignedUrl(movie.getPosterfilename());
+                    String posterLink = generatePresignedUrl(movie.getPosterfilename());
                     GenreResponse response = GenreResponse.builder()
                             .id(movie.getId())
                             .title(movie.getTitle())
-                            .posterlink(Posterlink)
+                            .posterlink(posterLink)
                             .build();
                     genreResponses.add(response);
                 }
             }
+            logger.info("Fetch by language '{}' completed successfully.", language);
             return Optional.of(genreResponses);
         } catch (Exception e) {
-            // Log the exception or handle it as needed
-            e.printStackTrace(); // Print stack trace for debugging
-            return Optional.empty(); // Return an empty Optional
+            logger.error("Error occurred while fetching movies by language '{}': {}", language, e.getMessage());
+            return Optional.empty();
         }
     }
 
