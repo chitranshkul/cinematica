@@ -22,7 +22,7 @@ pipeline {
             steps {
                 sh '''
                 cd frontend
-                docker build -t adarshtripathi1/frontend-chat -f Dockerfile.dev .
+                docker build -t chitranshkul/frontendspeproject -f .
                 '''
             }
         }
@@ -31,7 +31,7 @@ pipeline {
             steps {
                 sh '''
                 cd backend
-                docker build -t adarshtripathi1/backend-chat .
+                docker build -t chitranshkul/backendspeproject .
                 '''
             }
         }
@@ -50,8 +50,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('', 'DockerHubCred') {
-                        sh 'docker tag adarshtripathi1/frontend-chat:latest adarshtripathi1/frontend-chat:latest'
-                        sh 'docker push adarshtripathi1/frontend-chat:latest'
+                        sh 'docker push chitranshkul/frontendspeproject:latest'
                     }
                 }
             }
@@ -61,8 +60,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('', 'DockerHubCred') {
-                        sh 'docker tag adarshtripathi1/backend-chat:latest adarshtripathi1/backend-chat:latest'
-                        sh 'docker push adarshtripathi1/backend-chat:latest'
+                        sh 'docker push chitranshkul/backendspeproject:latest'
                     }
                 }
             }
