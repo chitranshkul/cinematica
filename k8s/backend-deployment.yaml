@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: backend
+  template:
+    metadata:
+      labels:
+        component: backend
+    spec:
+      containers:
+        - name: backend
+          image: chitranshkul07/backspe
+          ports:
+            - containerPort: 8081
+          env:
+            - name: MYSQL_DATABASE
+              value: 'cinematica'
+            - name: MYSQL_ROOT_PASSWORD
+              value: '1234'
+            - name: SPRING_DATASOURCE_URL
+              value: 'jdbc:mysql://mysql-cluster-ip-service:3306/cinematica?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true'
+            - name: SPRING_DATASOURCE_USERNAME
+              value: 'root'
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: '1234'

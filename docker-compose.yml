@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  backend:
+    image: backspee
+    ports:
+      - 8081:8081
+    depends_on:
+      - database
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/cinematica?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=1234
+    networks:
+      - springboot-mysql-network
+
+  frontend:
+    image: frontspe
+    ports:
+      - 3000:3000
+    networks:
+      - springboot-mysql-network
+
+  database:
+    image: mysql:latest
+    restart: unless-stopped
+    ports:
+      - 3308:3306  # Change the host port to 3307
+    environment:
+      - MYSQL_DATABASE=cinematica
+      - MYSQL_ROOT_PASSWORD=1234
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - springboot-mysql-network
+
+volumes:
+  mysql-data:
+
+networks:
+  springboot-mysql-network:
+    name: springboot-mysql-network
