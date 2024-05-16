@@ -21,7 +21,8 @@ pipeline {
         stage('Build Frontend Docker Image') {
             steps {
                 sh '''
-                cd frontend
+                cd Frontend
+                cd movietime
                 docker build -t chitranshkul/frontendspeproject -f .
                 '''
             }
@@ -30,7 +31,8 @@ pipeline {
         stage('Build Backend Docker Image') {
             steps {
                 sh '''
-                cd backend
+                cd Backend
+                cd AcademIQ-main
                 docker build -t chitranshkul/backendspeproject .
                 '''
             }
