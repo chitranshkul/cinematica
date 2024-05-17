@@ -24,13 +24,13 @@ COPY src ./src
 RUN mvn package -DskipTests
 
 # Use a lighter base image for the final image
-FROM adoptopenjdk:17-jre-hotspot
+FROM eclipse-temurin:17-jdk-alpine
 
 # Set the working directory in the container
 WORKDIR /app
 
 # Copy the JAR file built in the previous stage
-COPY --from=builder /target/academiq-0.0.1-SNAPSHOT.jar ./app.jar
+COPY --from=builder app/target/academiq-0.0.1-SNAPSHOT.jar ./app.jar
 
 # Expose the port your application listens on
 EXPOSE 8081
