@@ -23,7 +23,7 @@ pipeline {
                 sh '''
                 cd Frontend
                 cd movietime
-                docker build -t chitranshkul/frontendspeproject -f .
+                docker build -t chitranshkul/frontendspeproject .
                 '''
             }
         }
