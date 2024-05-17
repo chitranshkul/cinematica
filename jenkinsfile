@@ -23,7 +23,7 @@ pipeline {
                 sh '''
                 cd Frontend
                 cd movietime
-                docker build -t chitranshkul/frontendspeproject .
+                docker build -t chitranshkul07/frontendspeproject .
                 '''
             }
         }
@@ -33,7 +33,7 @@ pipeline {
                 sh '''
                 cd Backend
                 cd AcademIQ-main
-                docker build -t chitranshkul/backendspeproject .
+                docker build -t chitranshkul07/backendspeproject .
                 '''
             }
         }
@@ -52,7 +52,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('', 'DockerHubCred') {
-                        sh 'docker push chitranshkul/frontendspeproject:latest'
+                        sh 'docker push chitranshkul07/frontendspeproject:latest'
                     }
                 }
             }
@@ -62,7 +62,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('', 'DockerHubCred') {
-                        sh 'docker push chitranshkul/backendspeproject:latest'
+                        sh 'docker push chitranshkul07/backendspeproject:latest'
                     }
                 }
             }
