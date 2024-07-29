@@ -99,26 +99,26 @@ git pull
 git merge <branch_name>
 git push
 
-##Build and Testing
+## Build and Testing
 Install JDK:
 sudo apt-get install openjdk-11-jdk
 java --version
 
-##Install Maven:
+## Install Maven:
 sudo apt install maven
 mvn --version
 
-##Build and Test with Maven:
+## Build and Test with Maven:
 mvn clean install
 
-##Logging and Monitoring
+## Logging and Monitoring
 Logging: Log4j2 for logging various levels of messages.
 Monitoring: ELK Stack (Elasticsearch, Logstash, Kibana) for real-time log analysis and visualization.
 
-##Future Scope
+## Future Scope
 Subscription Plans: Implementing subscription plans and payment gateway.
 Enhanced User Engagement: Sending OTP via email and phone, and refining recommendation algorithms.
 
-##Conclusion
+## Conclusion
 Cinematica successfully integrates modern technologies to provide a comprehensive and enjoyable movie streaming experience. The platform's robust architecture ensures efficient content management and user engagement, making it a scalable and reliable solution for digital entertainment.
 
