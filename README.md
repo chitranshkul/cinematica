@@ -36,79 +36,78 @@ Install NPM:
 sudo apt install npm
 npm --version
 
-#Install Create-React-App Tool:
+### Install Create-React-App Tool:
 sudo npm -g install create-react-app
 create-react-app --version
 
-Run the React Application:
+### Run the React Application:
 npm start
 
-##Backend
+## Backend
 Create a Spring Boot Project:
 Use Spring Initializr to generate a Spring Boot project.
-##Database
+### Database
 Install MySQL Server:
 sudo apt install mysql-server
 sudo systemctl status mysql
 
-#Secure MySQL Installation:
+### Secure MySQL Installation:
 sudo mysql_secure_installation
 
-#Create a Dedicated MySQL User:
+### Create a Dedicated MySQL User:
 sudo mysql -u root -p
 
-##Docker
+### Docker
 Install Docker:
 sudo apt install docker.io
 sudo systemctl start docker
 sudo systemctl status docker
 
-##Build and Run Docker Images:
+### Build and Run Docker Images:
 docker build -t <image_name> .
 docker run -i -t <image_name>
 
-##Kubernetes
+### Kubernetes
 Start Minikube:
 minikube start
 
-##Verify Minikube Status:
+### Verify Minikube Status:
 minikube status
 
-##Ansible
+### Ansible
 Install Ansible:
 sudo apt install ansible
 ansible --version
 
-##Run Ansible Playbook:
-
-##Define tasks in a YAML format playbook and execute.
+### Run Ansible Playbook:
+Define tasks in a YAML format playbook and execute.
 Source Code Management
 Clone Repository:
 git clone <repository_url>
 
-##Create New Branch:
+### Create New Branch:
 git checkout -b <branch_name>
 
-##Add and Commit Changes:
+### Add and Commit Changes:
 git add .
 git commit -m "Commit message"
 
-##Merge and Push Changes:
+### Merge and Push Changes:
 git checkout master
 git pull
 git merge <branch_name>
 git push
 
-## Build and Testing
+### Build and Testing
 Install JDK:
 sudo apt-get install openjdk-11-jdk
 java --version
 
-## Install Maven:
+### Install Maven:
 sudo apt install maven
 mvn --version
 
-## Build and Test with Maven:
+### Build and Test with Maven:
 mvn clean install
 
 ## Logging and Monitoring
